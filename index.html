@@ -3,83 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Черепа и бриллианты</title>
+    <title>Казино с черепами</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: url('./background.jpg') no-repeat center center fixed;
-            background-size: cover;
+            font-family: 'Times New Roman', serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: white;
+            /* Фон можно заменить через свойство background */
+            background: url('./background.jpg') no-repeat center center fixed;
+            background-size: cover;
         }
 
-        .container {
-            text-align: center;
-            margin-top: 20px;
+        /* Если фон не загрузится, будет зелёный цвет казино */
+        body:before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 150px;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .skulls-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 100px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .skull {
+            width: 80px;
+            height: 80px;
+            background: url('./skull.png') no-repeat center center, #000;
+            background-size: contain;
+            border: 3px solid #555;
+            border-radius: 10px;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.5s;
+        }
+
+        .controls-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 15px;
         }
 
         .diamond-buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-bottom: 20px;
+            width: 100%;
         }
 
         .diamond-btn {
+            background: linear-gradient(to bottom, #FFD700, #B8860B);
+            border: 3px solid #800000;
+            border-radius: 50px;
+            color: #000;
+            font-weight: bold;
             padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid gold;
-            color: gold;
-            border-radius: 10px;
             cursor: pointer;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s;
+            font-size: 16px;
         }
 
         .diamond-btn.selected {
-            background: gold;
-            color: black;
+            background: linear-gradient(to bottom, #CC0000, #800000);
+            color: white;
         }
-        .diamond-image {
-            width: 40px; /* или любой нужный размер */
-            height: 40px;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto;
+
+        .diamond-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
         }
 
         .start-btn {
-            padding: 15px 30px;
-            background: linear-gradient(to right, #ff8a00, #da1b60);
-            border: none;
-            border-radius: 10px;
+            background: linear-gradient(to bottom, #CC0000, #800000);
             color: white;
-            font-weight: bold;
+            border: 3px solid gold;
+            border-radius: 50px;
+            font-size: 24px;
+            padding: 15px 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
-            margin: 20px 0;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 200px;
         }
 
-        .skulls-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
+        .start-btn:hover {
+            transform: scale(1.03);
         }
 
-        .skull {
-            width: 80px;
-            height: 80px;
-            background: url('./skull.png') no-repeat center center;
-            background-size: contain;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .skull.lifted {
-            transform: translateY(-20px);
+        .start-btn:disabled {
+            opacity: 0.7;
+            transform: none !important;
         }
 
         .modal {
@@ -89,204 +139,230 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             justify-content: center;
             align-items: center;
             z-index: 100;
         }
 
         .modal-content {
-            background: #222;
+            background: linear-gradient(135deg, #000, #222);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            color: white;
             padding: 20px;
-            border-radius: 10px;
             text-align: center;
-            max-width: 300px;
+            width: 80%;
+            max-width: 400px;
         }
 
-        .modal input {
-            width: 100%;
+        .modal-content input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #FFD700;
+            color: white;
             padding: 10px;
-            margin: 10px 0;
             border-radius: 5px;
-            border: none;
+            width: 100%;
+            margin: 10px 0;
+            font-size: 16px;
         }
 
-        .modal button {
-            padding: 10px 20px;
-            background: gold;
-            border: none;
+        .modal-content button {
+            background: linear-gradient(to bottom, #CC0000, #800000);
+            color: white;
+            border: 2px solid gold;
             border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-weight: bold;
             cursor: pointer;
         }
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Отключаем прокрутку */
+
+        .diamond-img {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
         }
-        #app-container {
-            width: 100%;
-            height: 100%;
-            max-width: 100%; /* Важно для Telegram */
-            max-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .background-image {
-            width: 100%;
-            height: auto;
-            object-fit: contain; /* Сохраняет пропорции */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+
+        @keyframes casinoFlash {
+            0% { background-color: rgba(0, 100, 0, 0.8); }
+            25% { background-color: rgba(255, 215, 0, 0.8); }
+            50% { background-color: rgba(204, 0, 0, 0.8); }
+            75% { background-color: rgba(255, 215, 0, 0.8); }
+            100% { background-color: rgba(0, 100, 0, 0.8); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Найди бриллианты!</h1>
-        
-        <div class="diamond-buttons">
-            <button class="diamond-btn" onclick="selectDiamonds(1)">1 бриллиант</button>
-            <button class="diamond-btn" onclick="selectDiamonds(2)">2 бриллианта</button>
-        </div>
-        
-        <button class="start-btn" onclick="startGame()">СТАРТ</button>
+    <div class="game-container">
+        <h1>Brawl Pirates</h1>
         
         <div class="skulls-container">
             <div class="skull" data-id="1"></div>
             <div class="skull" data-id="2"></div>
             <div class="skull" data-id="3"></div>
         </div>
+        
+        <div class="controls-container">
+            <div class="diamond-buttons">
+                <button class="diamond-btn" data-diamonds="1">1 БРИЛЛИАНТ</button>
+                <button class="diamond-btn" data-diamonds="2">2 БРИЛЛИАНТА</button>
+            </div>
+            
+            <button class="start-btn">СТАРТ</button>
+        </div>
     </div>
 
     <div class="modal" id="hashModal">
         <div class="modal-content">
-            <h3>Введите хеш игры</h3>
-            <input type="text" id="gameHash" placeholder="Хеш...">
-            <button onclick="submitHash()">Отправить</button>
+            <h3>ВВЕДИТЕ ХЕШ ИГРЫ</h3>
+            <input type="text" id="gameHash" placeholder="Введите хеш...">
+            <button class="submit-hash">ОТПРАВИТЬ</button>
         </div>
     </div>
 
     <script>
-        let selectedDiamonds = 0;
-        let skulls = document.querySelectorAll('.skull');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация переменных
+            let selectedDiamonds = 0;
+            const skulls = document.querySelectorAll('.skull');
+            const startBtn = document.querySelector('.start-btn');
+            const diamondBtns = document.querySelectorAll('.diamond-btn');
+            const hashInput = document.getElementById('gameHash');
+            const hashModal = document.getElementById('hashModal');
+            const submitBtn = document.querySelector('.submit-hash');
 
-        // Выбор количества бриллиантов
-        function selectDiamonds(count) {
-            selectedDiamonds = count;
-            document.querySelectorAll('.diamond-btn').forEach(btn => {
-                btn.classList.remove('selected');
+            // Выбор количества бриллиантов
+            diamondBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectedDiamonds = parseInt(this.dataset.diamonds);
+                    diamondBtns.forEach(b => {
+                        b.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
             });
-            event.target.classList.add('selected');
-        }
 
-        // Запуск игры (показ модалки)
-        function startGame() {
-            if (selectedDiamonds === 0) {
-                alert('Выберите количество бриллиантов!');
-                return;
+            // Запуск игры
+            startBtn.addEventListener('click', function() {
+                if (selectedDiamonds === 0) {
+                    alert('Выберите количество бриллиантов!');
+                    return;
+                }
+                hashModal.style.display = 'flex';
+            });
+
+            // Отправка хеша
+            submitBtn.addEventListener('click', function() {
+                const hash = hashInput.value.trim();
+                if (!hash) {
+                    alert('Введите хеш игры!');
+                    return;
+                }
+                hashModal.style.display = 'none';
+                startGame(hash);
+            });
+
+            // Основная игровая функция
+            function startGame(hash) {
+                startBtn.disabled = true;
+                startBtn.style.opacity = '0.7';
+                
+                // Анимация перемешивания
+                shuffleAnimation(() => {
+                    // Определяем победные черепа
+                    const winningSkulls = getWinningSkulls();
+                    
+                    // Показываем результат
+                    revealDiamonds(winningSkulls, () => {
+                        // Автоперезапуск через 3 секунды
+                        setTimeout(resetGame, 3000);
+                    });
+                });
             }
-            document.getElementById('hashModal').style.display = 'flex';
-        }
-
-        // Отправка хеша и запуск анимации
-        function submitHash() {
-            const hash = document.getElementById('gameHash').value;
-            if (!hash) {
-                alert('Введите хеш!');
-                return;
-            }
-
-            document.getElementById('hashModal').style.display = 'none';
 
             // Анимация перемешивания
-            shuffleAnimation();
-        }
+            function shuffleAnimation(callback) {
+                let shuffles = 0;
+                const maxShuffles = 10;
+                
+                const interval = setInterval(() => {
+                    skulls.forEach(skull => {
+                        skull.style.transform = `translateY(${Math.random() > 0.5 ? '-10px' : '0'}) rotate(${Math.random() * 20 - 10}deg)`;
+                    });
+                    
+                    shuffles++;
+                    if (shuffles >= maxShuffles) {
+                        clearInterval(interval);
+                        callback();
+                    }
+                }, 200);
+            }
 
-        // Анимация перемешивания черепов
-        function shuffleAnimation() {
-            let shuffles = 0;
-            const maxShuffles = 10;
-            const interval = setInterval(() => {
+            // Определение выигрышных черепов
+            function getWinningSkulls() {
+                const winningSkulls = [];
+                while (winningSkulls.length < selectedDiamonds) {
+                    const randomSkull = Math.floor(Math.random() * 3) + 1;
+                    if (!winningSkulls.includes(randomSkull)) {
+                        winningSkulls.push(randomSkull);
+                    }
+                }
+                return winningSkulls;
+            }
+
+            // Показ результата
+            function revealDiamonds(winningSkulls, callback) {
+                // Казино-эффект открытия
+                document.querySelector('.skulls-container').style.boxShadow = '0 0 30px rgba(255,215,0,0.7)';
+                
                 skulls.forEach(skull => {
-                    skull.style.transform = `translateY(${Math.random() > 0.5 ? '-10px' : '0'})`;
+                    const skullId = parseInt(skull.dataset.id);
+                    if (winningSkulls.includes(skullId)) {
+                        setTimeout(() => {
+                            skull.classList.add('lifted');
+                            skull.style.transform = 'translateY(-30px) rotate(0deg)';
+                            skull.style.boxShadow = '0 10px 25px rgba(255,215,0,0.7)';
+                            skull.style.border = '3px solid gold';
+                            skull.innerHTML = '<img src="./diamond.png" class="diamond-img">';
+                        }, 500);
+                    }
                 });
-                shuffles++;
-
-                if (shuffles >= maxShuffles) {
-                    clearInterval(interval);
-                    revealDiamonds();
-                }
-            }, 200);
-        }
-
-        // Показ бриллиантов под черепами
-        function revealDiamonds() {
-            const winningSkulls = [];
-            
-            // Выбираем случайные черепы (1 или 2 в зависимости от выбора)
-            while (winningSkulls.length < selectedDiamonds) {
-                const randomSkull = Math.floor(Math.random() * 3) + 1;
-                if (!winningSkulls.includes(randomSkull)) {
-                    winningSkulls.push(randomSkull);
-                }
+                
+                setTimeout(() => {
+                    document.body.style.animation = 'casinoFlash 0.5s';
+                    setTimeout(() => {
+                        document.body.style.animation = '';
+                        callback();
+                    }, 500);
+                }, 2000);
             }
 
-            // Поднимаем выигрышные черепы
-            skulls.forEach(skull => {
-                if (winningSkulls.includes(parseInt(skull.dataset.id))) {
-                    skull.classList.add('lifted');
-                    // Вставляем изображение бриллианта
-                    skull.innerHTML = '<img src="./diamond.png" alt="Diamond" class="diamond-image">';
-                }
-            });
-
-            // Спрашиваем, играть снова или нет
-            setTimeout(() => {
-                if (confirm('Будем играть ещё?')) {
-                    resetGame();
-                } else {
-                    Telegram.WebApp.close();
-                }
-            }, 1000);
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.Telegram && Telegram.WebApp) {
-                // Получаем реальные размеры окна Telegram
-                const viewportHeight = Telegram.WebApp.viewportHeight;
-                const viewportWidth = Telegram.WebApp.viewportWidth;
+            // Сброс игры
+            function resetGame() {
+                // Сбрасываем черепы
+                skulls.forEach(skull => {
+                    skull.classList.remove('lifted');
+                    skull.innerHTML = '';
+                    skull.style.transform = 'translateY(0) rotate(0deg)';
+                    skull.style.boxShadow = 'inset 0 0 20px rgba(255,255,255,0.1)';
+                    skull.style.border = '3px solid #555';
+                });
                 
-                // Настраиваем изображение
-                const bgImage = document.getElementById('bg-image');
-                bgImage.style.maxHeight = `${viewportHeight}px`;
-                bgImage.style.maxWidth = `${viewportWidth}px`;
-        }
+                document.querySelector('.skulls-container').style.boxShadow = '0 0 30px rgba(255,215,0,0.3)';
+                
+                // Сбрасываем другие элементы
+                selectedDiamonds = 0;
+                hashInput.value = '';
+                diamondBtns.forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                startBtn.disabled = false;
+                startBtn.style.opacity = '1';
+            }
         });
-
-        // Сброс игры
-        function resetGame() {
-            skulls.forEach(skull => {
-                skull.classList.remove('lifted');
-                skull.innerHTML = '';
-            });
-            selectedDiamonds = 0;
-            document.querySelectorAll('.diamond-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-        }
-                // Проверяем, что скрипт запущен внутри Telegram
-            if (window.Telegram && Telegram.WebApp) {
-                Telegram.WebApp.expand(); // Раскрываем на весь экран
-                
-                // Закрытие Mini App
-                function closeApp() {
-                    Telegram.WebApp.close();
-                }
-            }
     </script>
-    
 </body>
 </html>
