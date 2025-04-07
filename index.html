@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: url('https://github.com/heedaann/botss/blob/main/background.jpg') no-repeat center center fixed;
+            background: url('./background.jpg') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             padding: 0;
@@ -72,7 +72,7 @@
         .skull {
             width: 80px;
             height: 80px;
-            background: url('https://github.com/heedaann/botss/blob/main/skull.png') no-repeat center center;
+            background: url('./skull.png') no-repeat center center;
             background-size: contain;
             cursor: pointer;
             transition: transform 0.3s;
@@ -240,7 +240,7 @@
                 if (winningSkulls.includes(parseInt(skull.dataset.id))) {
                     skull.classList.add('lifted');
                     // Вставляем изображение бриллианта
-                    skull.innerHTML = '<img src="https://github.com/heedaann/botss/blob/main/diamond.png" alt="Diamond" class="diamond-image">';
+                    skull.innerHTML = '<img src="./diamond.png" alt="Diamond" class="diamond-image">';
                 }
             });
 
