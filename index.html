@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Черепа и бриллианты</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('./images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .diamond-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .diamond-btn {
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid gold;
+            color: gold;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .diamond-btn.selected {
+            background: gold;
+            color: black;
+        }
+        .diamond-image {
+            width: 40px; /* или любой нужный размер */
+            height: 40px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .start-btn {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        .skulls-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .skull {
+            width: 80px;
+            height: 80px;
+            background: url('./images/skull.png') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .skull.lifted {
+            transform: translateY(-20px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .modal button {
+            padding: 10px 20px;
+            background: gold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Отключаем прокрутку */
+        }
+        #app-container {
+            width: 100%;
+            height: 100%;
+            max-width: 100%; /* Важно для Telegram */
+            max-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .background-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* Сохраняет пропорции */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Найди бриллианты!</h1>
+        
+        <div class="diamond-buttons">
+            <button class="diamond-btn" onclick="selectDiamonds(1)">1 бриллиант</button>
+            <button class="diamond-btn" onclick="selectDiamonds(2)">2 бриллианта</button>
+        </div>
+        
+        <button class="start-btn" onclick="startGame()">СТАРТ</button>
+        
+        <div class="skulls-container">
+            <div class="skull" data-id="1"></div>
+            <div class="skull" data-id="2"></div>
+            <div class="skull" data-id="3"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="hashModal">
+        <div class="modal-content">
+            <h3>Введите хеш игры</h3>
+            <input type="text" id="gameHash" placeholder="Хеш...">
+            <button onclick="submitHash()">Отправить</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedDiamonds = 0;
+        let skulls = document.querySelectorAll('.skull');
+
+        // Выбор количества бриллиантов
+        function selectDiamonds(count) {
+            selectedDiamonds = count;
+            document.querySelectorAll('.diamond-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        // Запуск игры (показ модалки)
+        function startGame() {
+            if (selectedDiamonds === 0) {
+                alert('Выберите количество бриллиантов!');
+                return;
+            }
+            document.getElementById('hashModal').style.display = 'flex';
+        }
+
+        // Отправка хеша и запуск анимации
+        function submitHash() {
+            const hash = document.getElementById('gameHash').value;
+            if (!hash) {
+                alert('Введите хеш!');
+                return;
+            }
+
+            document.getElementById('hashModal').style.display = 'none';
+
+            // Анимация перемешивания
+            shuffleAnimation();
+        }
+
+        // Анимация перемешивания черепов
+        function shuffleAnimation() {
+            let shuffles = 0;
+            const maxShuffles = 10;
+            const interval = setInterval(() => {
+                skulls.forEach(skull => {
+                    skull.style.transform = `translateY(${Math.random() > 0.5 ? '-10px' : '0'})`;
+                });
+                shuffles++;
+
+                if (shuffles >= maxShuffles) {
+                    clearInterval(interval);
+                    revealDiamonds();
+                }
+            }, 200);
+        }
+
+        // Показ бриллиантов под черепами
+        function revealDiamonds() {
+            const winningSkulls = [];
+            
+            // Выбираем случайные черепы (1 или 2 в зависимости от выбора)
+            while (winningSkulls.length < selectedDiamonds) {
+                const randomSkull = Math.floor(Math.random() * 3) + 1;
+                if (!winningSkulls.includes(randomSkull)) {
+                    winningSkulls.push(randomSkull);
+                }
+            }
+
+            // Поднимаем выигрышные черепы
+            skulls.forEach(skull => {
+                if (winningSkulls.includes(parseInt(skull.dataset.id))) {
+                    skull.classList.add('lifted');
+                    // Вставляем изображение бриллианта
+                    skull.innerHTML = '<img src="images/diamond.png" alt="Diamond" class="diamond-image">';
+                }
+            });
+
+            // Спрашиваем, играть снова или нет
+            setTimeout(() => {
+                if (confirm('Будем играть ещё?')) {
+                    resetGame();
+                } else {
+                    Telegram.WebApp.close();
+                }
+            }, 1000);
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.Telegram && Telegram.WebApp) {
+                // Получаем реальные размеры окна Telegram
+                const viewportHeight = Telegram.WebApp.viewportHeight;
+                const viewportWidth = Telegram.WebApp.viewportWidth;
+                
+                // Настраиваем изображение
+                const bgImage = document.getElementById('bg-image');
+                bgImage.style.maxHeight = `${viewportHeight}px`;
+                bgImage.style.maxWidth = `${viewportWidth}px`;
+        }
+        });
+
+        // Сброс игры
+        function resetGame() {
+            skulls.forEach(skull => {
+                skull.classList.remove('lifted');
+                skull.innerHTML = '';
+            });
+            selectedDiamonds = 0;
+            document.querySelectorAll('.diamond-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+        }
+                // Проверяем, что скрипт запущен внутри Telegram
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.expand(); // Раскрываем на весь экран
+                
+                // Закрытие Mini App
+                function closeApp() {
+                    Telegram.WebApp.close();
+                }
+            }
+    </script>
+    
+</body>
+</html>
