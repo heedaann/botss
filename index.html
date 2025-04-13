@@ -14,12 +14,10 @@
             align-items: center;
             min-height: 100vh;
             color: white;
-            /* Фон можно заменить через свойство background */
             background: url('./background.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
-        /* Если фон не загрузится, будет зелёный цвет казино */
         body:before {
             content: '';
             position: fixed;
@@ -27,7 +25,6 @@
             left: 0;
             right: 0;
             bottom: 0;
-
             z-index: -1;
             opacity: 0.8;
         }
@@ -37,12 +34,17 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            margin-top: 30px;
+
             max-width: 500px;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        }
+        .game-logo {
+            width: 400px;
+            height: 250px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
         }
 
         .skulls-container {
@@ -67,7 +69,7 @@
             border-radius: 10px;
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease-in-out;
-            will-change: transform; /* Оптимизация анимации */
+            will-change: transform;
             position: relative;
         }
 
@@ -84,36 +86,100 @@
             justify-content: center;
             gap: 20px;
             width: 100%;
+            flex-wrap: nowrap;
         }
 
-        .diamond-btn {
-            background: linear-gradient(to bottom, #FFD700, #B8860B);
-            border: 3px solid #800000;
-            border-radius: 50px;
-            color: #000;
-            font-weight: bold;
-            padding: 10px 20px;
+        /* Стили для кнопок выбора бриллиантов */
+        .diamond-btn-77 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-clip: padding-box;
+            background-color: initial;
+            background-image: none;
+            border-style: none;
+            box-sizing: border-box;
+            color: #fff;
             cursor: pointer;
-            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s;
-            font-size: 16px;
+            font-family: baskerville, serif;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.2;
+            min-height: 60px;
+            min-width: 140px;
+            outline: none;
+            overflow: hidden;
+            padding: 12px 20px;
+            pointer-events: auto;
+            position: relative;
+            text-decoration: none;
+            text-transform: none;
+            user-select: none;
+            white-space: nowrap;
+            width: auto;
+            word-break: keep-all;
+            z-index: 0;
         }
 
-        .diamond-btn.selected {
-            background: linear-gradient(to bottom, #CC0000, #800000);
-            color: white;
+        .diamond-btn-77:before,
+        .diamond-btn-77:after {
+            border-radius: 50px;
         }
 
-        .diamond-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        .diamond-btn-77:before {
+            background-color: rgba(0, 0, 0, 0.3);
+            content: "";
+            display: block;
+            height: 100%;
+            left: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: -2;
+        }
+
+        .diamond-btn-77:after {
+            background-image: linear-gradient(to bottom, #555, #333);
+            bottom: 4px;
+            content: "";
+            display: block;
+            left: 4px;
+            overflow: hidden;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            transition: all 100ms ease-out;
+            z-index: -1;
+        }
+
+        .diamond-btn-77.selected:after {
+            background-image: linear-gradient(to bottom, #d6e509);
+            border: 4px solid rgb(255, 255, 255);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .diamond-btn-77:hover:not(.selected):after {
+            background-image: linear-gradient(to bottom, #777, #555);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .diamond-btn-77 .diamond-count {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 5px;
         }
 
         .start-btn {
-            background: linear-gradient(to bottom, #CC0000, #800000);
+            background: linear-gradient(to bottom, #cc2900, #cc2900);
             color: white;
-            border: 3px solid gold;
+            border: 3px solid rgb(255, 255, 255);
             border-radius: 50px;
             font-size: 24px;
             padding: 15px 40px;
@@ -172,9 +238,8 @@
         }
 
         .modal-content button {
-            background: linear-gradient(to bottom, #CC0000, #800000);
+            background: linear-gradient(to bottom,rgba(255, 255, 255, 0.1));
             color: white;
-            border: 2px solid gold;
             border-radius: 5px;
             padding: 10px 20px;
             margin-top: 10px;
@@ -187,7 +252,153 @@
             margin-left: 15px;
             width: 50px;
             height: 50px;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+            filter: drop-shadow(0 0 10px rgba(246, 255, 0, 0.9));
+        }
+
+        .button-75,
+        .button-76,
+        .button-77 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-clip: padding-box;
+            background-color: initial;
+            background-image: none;
+            border-style: none;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-family: baskerville, serif;
+            font-size: 23px;
+            font-weight: 800;
+            line-height: 24px;
+            min-height: 64px;
+            outline: none;
+            overflow: visible;
+            padding: 19px 26px;
+            pointer-events: auto;
+            position: relative;
+            text-decoration: none;
+            text-transform: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: auto;
+            word-break: keep-all;
+            z-index: 0;
+            margin: 10px auto;
+        }
+
+        .button-77:before,
+        .button-77:after {
+            border-radius: 80px;
+        }
+        .button-76:before,
+        .button-76:after {
+            border-radius: 80px;
+        }
+
+        .button-75:before,
+        .button-75:after {
+            border-radius: 80px;
+        }
+
+        .button-77:before {
+            background-color: rgba(17, 138, 195, 0.38)
+        }
+        .button-76:before {
+            background-color: rgba(195, 38, 17, 0.38)
+        }
+        .button-75:before {
+            background-color: rgba(33, 82, 5, 0.545);
+        }
+        .button-76:before,
+        .button-75:before,
+        .button-77:before {
+            content: "";
+            display: block;
+            height: 100%;
+            left: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: -2;
+        }
+
+        .button-76.button-red:after {
+            background-image: linear-gradient(92.83deg, #ff5e5e 0, #ff0000 100%);
+        }
+        .button-76.button-red:hover:not(:disabled):after {
+            background-image: linear-gradient(92.83deg, #ff0000 0, #ff5e5e 100%);
+        }
+
+        .button-75.button-green:after {
+            background-image: linear-gradient(92.83deg, #4CAF50 0, #2E7D32 100%);
+        }
+        .button-75.button-green:hover:not(:disabled):after {
+            background-image: linear-gradient(92.83deg, #2E7D32 0, #4CAF50 100%);
+        }
+
+        .button-77.button-blue:after {
+            background-image: linear-gradient(92.83deg, #5aaff9 0, #3d83fb 100%);
+        }
+        .button-77.button-blue:hover:not(:disabled):after {
+            background-image: linear-gradient(92.83deg, #3d83fb 0, #5aaff9 100%);
+        }
+
+        .button-77:after,
+        .button-76:after,
+        .button-75:after {
+            background-color: initial;
+            content: "";
+            bottom: 4px;
+            display: block;
+            left: 4px;
+            overflow: hidden;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            transition: all 100ms ease-out;
+            z-index: -1;
+        }
+
+        .button-77:hover:not(:disabled):after {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            transition-timing-function: ease-in;
+        }
+
+        .button-77:active:not(:disabled) {
+            color: #ccc;
+        }
+
+        .button-77:active:not(:disabled):after {
+            bottom: 4px;
+            left: 4px;
+            right: 4px;
+            top: 4px;
+        }
+
+        .button-77:disabled {
+            cursor: default;
+            opacity: .24;
+        }
+
+        .telegram-icon {
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+            fill: white;
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         @keyframes casinoFlash {
@@ -201,9 +412,19 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Brawl Pirates</h1>
-        <h1>t.me/P4ILANTROP</h1>
+        <!-- Заменяем текстовый заголовок на изображение -->
+        <img src="./gamel.png" alt="Brawl Pirates" class="game-logo">
         
+        <div>
+            <a href="https://t.me/p4ilantrop" class="button-77 button-blue" target="_blank">
+                <div class="button-content">
+                    <svg class="telegram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                    </svg>
+                    t.me/P4ILANTROP
+                </div>
+            </a>
+        </div>
         <div class="skulls-container">
             <div class="skull" data-id="1"></div>
             <div class="skull" data-id="2"></div>
@@ -212,11 +433,15 @@
         
         <div class="controls-container">
             <div class="diamond-buttons">
-                <button class="diamond-btn" data-diamonds="1">1 БРИЛЛИАНТ</button>
-                <button class="diamond-btn" data-diamonds="2">2 БРИЛЛИАНТА</button>
+                <button class="diamond-btn-77" data-diamonds="1">
+                    <span class="diamond-count">1</span> БРИЛЛИАНТ
+                </button>
+                <button class="diamond-btn-77" data-diamonds="2">
+                    <span class="diamond-count">2</span> БРИЛЛИАНТА
+                </button>
             </div>
             
-            <button class="start-btn">СТАРТ</button>
+            <button class="button-76 button-red start-btn">START</button>
         </div>
     </div>
 
@@ -224,7 +449,7 @@
         <div class="modal-content">
             <h3>ВВЕДИТЕ ХЕШ ИГРЫ</h3>
             <input type="text" id="gameHash" placeholder="Введите хеш...">
-            <button class="submit-hash">ОТПРАВИТЬ</button>
+            <button class="button-75 button-green submit-hash">ОТПРАВИТЬ</button>
         </div>
     </div>
 
@@ -235,7 +460,7 @@
             let selectedDiamonds = 0;
             const skulls = Array.from(document.querySelectorAll('.skull'));
             const startBtn = document.querySelector('.start-btn');
-            const diamondBtns = document.querySelectorAll('.diamond-btn');
+            const diamondBtns = document.querySelectorAll('.diamond-btn-77');
             const hashInput = document.getElementById('gameHash');
             const hashModal = document.getElementById('hashModal');
             const submitBtn = document.querySelector('.submit-hash');
@@ -245,9 +470,15 @@
             diamondBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     if (isAnimating) return;
-                    selectedDiamonds = parseInt(this.dataset.diamonds);
+                    
+                    // Удаляем класс selected у всех кнопок
                     diamondBtns.forEach(b => b.classList.remove('selected'));
+                    
+                    // Добавляем класс selected только к нажатой кнопке
                     this.classList.add('selected');
+                    
+                    // Сохраняем выбранное количество бриллиантов
+                    selectedDiamonds = parseInt(this.dataset.diamonds);
                 });
             });
 
@@ -271,12 +502,12 @@
                 }
                 
                 if (hash.length !== 128) {
-                    alert('Хеш должен содержать ровно 128 символов!');
+                    alert('Несуществующий хэш, попробуйте еще раз!');
                     return;
                 }
                 
                 if (!/^[a-fA-F0-9]{128}$/.test(hash)) {
-                    alert('Хеш должен содержать только буквы (A-F, a-f) и цифры (0-9)!');
+                    alert('Несуществующий хэш, попробуйте еще раз!');
                     return;
                 }
                 
@@ -387,7 +618,6 @@
 
                 requestAnimationFrame(animate);
             }
-
 
             function swapRandomSkulls() {
                 const idx1 = Math.floor(Math.random() * 3);
@@ -505,7 +735,7 @@
                 startBtn.disabled = false;
                 isAnimating = false;
             }
-            });
+        });
     </script>
 </body>
 </html>
